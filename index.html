@@ -14,6 +14,11 @@
 <meta property="og:title" content="Taskboat · Sauvez vos listes Microsoft To Do">
 <meta property="og:description" content="Export gratuit de Microsoft To Do vers CSV, Todoist, Markdown, ICS et JSON, sans rien installer. Tout se passe dans votre navigateur.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://DOMAINE/">
+<meta property="og:image" content="https://DOMAINE/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 
 
 <script type="application/ld+json">
@@ -30,10 +35,11 @@
 </script>
 </head>
 <body>
+<div class="sea">
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="12" fill="none" stroke="var(--buoy)" stroke-width="6" stroke-dasharray="9.42 9.42"/><circle cx="15" cy="15" r="12" fill="none" stroke="var(--ink)" stroke-width="1.2"/><circle cx="15" cy="15" r="6.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/><path d="M12 15.2l2.1 2.1 4-4.4" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="12" fill="none" stroke="#ff8a6b" stroke-width="6" stroke-dasharray="9.42 9.42"/><circle cx="15" cy="15" r="12" fill="none" stroke="#f2f8fa" stroke-width="1.2"/><circle cx="15" cy="15" r="6.5" fill="#0b2f47" stroke="#f2f8fa" stroke-width="1.2"/><path d="M12 15.2l2.1 2.1 4-4.4" fill="none" stroke="#f2f8fa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Taskboat
     </div>
     <div class="langs" role="group" aria-label="Langue / Language">
@@ -44,36 +50,50 @@
 
   <div class="hero">
     <div>
-      <h1 class="fr">Microsoft To Do ferme. <em>Emportez vos listes.</em></h1>
-      <h1 class="en">Microsoft To Do is retiring. <em>Take your lists with you.</em></h1>
+      <h1 class="fr">Microsoft To&nbsp;Do ferme. <em>Emportez vos listes.</em></h1>
+      <h1 class="en">Microsoft To&nbsp;Do is retiring. <em>Take your lists with you.</em></h1>
       <p class="lead fr">Exportez toutes vos listes, tâches, étapes et notes vers CSV, Todoist, Markdown (Obsidian), ICS ou une sauvegarde JSON complète. Gratuit, sans installation, et vos tâches ne quittent jamais votre navigateur.</p>
       <p class="lead en">Export every list, task, step and note to CSV, Todoist, Markdown (Obsidian), ICS or a full JSON backup. Free, nothing to install, and your tasks never leave your browser.</p>
+      <ul class="trust">
+        <li><span class="fr">Traitement 100 % local</span><span class="en">100% local processing</span></li>
+        <li><span class="fr">Comptes personnels et professionnels</span><span class="en">Personal and work accounts</span></li>
+        <li><span class="fr">Lecture seule : rien n'est modifié</span><span class="en">Read-only: nothing is changed</span></li>
+        <li><span class="fr">Étapes, notes, échéances, importance</span><span class="en">Steps, notes, due dates, importance</span></li>
+      </ul>
     </div>
-    <div class="countdown" aria-live="polite">
-      <div class="lab"><span class="fr">Retrait des applis To Do</span><span class="en">To Do apps retire</span> · 30/06/2027</div>
-      <div class="num" id="days">—</div>
-      <div class="sub"><span class="fr">jours pour sauver vos tâches</span><span class="en">days left to save your tasks</span></div>
-      <div class="bar"><i id="daysbar"></i></div>
+    <div class="countdown">
+      <div class="buoy">
+        <svg viewBox="0 0 320 320" aria-hidden="true">
+          <circle cx="160" cy="160" r="150" fill="none" stroke="#e9d9b8" stroke-width="4" stroke-dasharray="9 4"/>
+          <circle cx="160" cy="160" r="116" fill="none" stroke="#f7fbfc" stroke-width="54"/>
+          <circle cx="160" cy="160" r="116" fill="none" stroke="#d9492b" stroke-width="54" stroke-dasharray="91.11 91.11" transform="rotate(-22.5 160 160)"/>
+          <circle cx="160" cy="160" r="134" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="7"/>
+          <circle cx="160" cy="160" r="80" fill="none" stroke="#f2f8fa" stroke-opacity=".22" stroke-width="6"/>
+          <circle id="daysarc" cx="160" cy="160" r="80" fill="none" stroke="#ff8a6b" stroke-width="6" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100" transform="rotate(-90 160 160)"/>
+        </svg>
+        <div class="in"><span class="num" id="days">—</span><span class="unit"><span class="fr">jours restants</span><span class="en">days left</span></span></div>
+      </div>
+      <p class="lab"><span class="fr">Retrait des applis To Do le <b>30 juin 2027</b></span><span class="en">To Do apps retire on <b>June 30, 2027</b></span></p>
     </div>
   </div>
 
-  <ul class="trust">
-    <li><span class="fr">Traitement 100 % local</span><span class="en">100% local processing</span></li>
-    <li><span class="fr">Comptes personnels et professionnels</span><span class="en">Personal and work accounts</span></li>
-    <li><span class="fr">Lecture seule : rien n'est modifié</span><span class="en">Read-only: nothing is changed</span></li>
-    <li><span class="fr">Étapes, notes, échéances, importance</span><span class="en">Steps, notes, due dates, importance</span></li>
-  </ul>
+  
 
+  </div>
+<svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path class="back" d="M0 40C120 10 240 10 360 40S600 70 720 40 960 10 1080 40s240 30 360 0V90H0Z"/><path class="front" d="M0 62c120 22 240 22 360 0s240-22 360 0 240 22 360 0 240-22 360 0V90H0Z"/></svg>
+</div>
+
+<div class="wrap deck">
   <main class="tool" id="outil">
     <div class="sources">
       <div class="src">
-        <h2><span class="fr">1. Se connecter à Microsoft</span><span class="en">1. Sign in with Microsoft</span></h2>
+        <h2><span class="fr">Se connecter à Microsoft</span><span class="en">Sign in with Microsoft</span></h2>
         <p class="fr">Lecture seule (permission <code>Tasks.Read</code>). Le jeton reste dans cet onglet.</p>
         <p class="en">Read-only (<code>Tasks.Read</code> permission). The token stays in this tab.</p>
         <button class="btn primary" id="btn-ms" type="button"><span class="fr">Se connecter et charger mes listes</span><span class="en">Sign in and load my lists</span></button>
       </div>
       <div class="src">
-        <h2><span class="fr">2. Ou ouvrir un fichier JSON</span><span class="en">2. Or open a JSON file</span></h2>
+        <h2><span class="fr">Ou ouvrir un fichier JSON</span><span class="en">Or open a JSON file</span></h2>
         <p class="fr">Réponse de Graph Explorer (<code>/me/todo/lists?$expand=tasks</code>) ou sauvegarde Taskboat.</p>
         <p class="en">Graph Explorer response (<code>/me/todo/lists?$expand=tasks</code>) or a Taskboat backup.</p>
         <div class="row">
@@ -118,8 +138,9 @@
             <button class="btn primary" type="button" id="btn-dl"><span class="fr">Télécharger</span><span class="en">Download</span></button>
           </span>
         </div>
-        <textarea id="outtext" readonly aria-label="Aperçu de l'export"></textarea>
+        
         <p class="hint" id="outhint"></p>
+        <details id="preview"><summary><span class="fr">Voir le contenu du fichier</span><span class="en">Show file content</span></summary><textarea id="outtext" readonly aria-label="Aperçu de l'export"></textarea></details>
       </div>
     </div>
   </main>

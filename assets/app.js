@@ -98,6 +98,7 @@ function parseAny(obj){
 }
 
 /* ---------- Rendu ---------- */
+function fmtDate(s){ const d=new Date(s+"T12:00:00"); return isNaN(d) ? s : d.toLocaleDateString(lang,{day:"numeric",month:"short",year:"numeric"}); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 function totals(){ return data.lists.reduce((n,l)=>n+l.tasks.length,0); }
 function setStatus(msg){ $("#status").innerHTML = msg; }
@@ -127,7 +128,7 @@ function renderTasks(){
   box.innerHTML=sorted.map(x=>{
     const meta=[];
     if(x.importance==="high") meta.push(`<span class="hi">${t("high")}</span>`);
-    if(x.due) meta.push(`<span>${t("due")} ${esc(x.due)}</span>`);
+    if(x.due) meta.push(`<span>${t("due")} ${esc(fmtDate(x.due))}</span>`);
     if(x.recurrence) meta.push(`<span>↻ ${esc(x.recurrence)}</span>`);
     if(x.steps.length) meta.push(`<span>${x.steps.filter(s=>s.done).length}/${x.steps.length} ${t("steps")}</span>`);
     x.categories.forEach(c=>meta.push(`<span>${esc(c)}</span>`));
@@ -222,6 +223,7 @@ function exICS(){
 }
 const EX={json:exJSON,csv:exCSV,todoist:exTodoist,md:exMD,ics:exICS};
 function showOut(o){
+  document.querySelectorAll("#fmt button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===lastKey));
   lastOut=o; $("#out").hidden=false; $("#fname").textContent=o.name;
   $("#outtext").value=o.text.length>200000 ? o.text.slice(0,200000)+"\n…" : o.text; $("#outhint").innerHTML=esc(o.hint).replace(/(https:\/\/[^\s<]+)/g,'<a href="$1" rel="noopener" target="_blank">$1</a>');
 }
@@ -237,8 +239,8 @@ function copyOut(){
   if(!lastOut) return;
   const ta=$("#outtext");
   try{
-    navigator.clipboard.writeText(lastOut.text).then(()=>{ $("#outhint").textContent=t("copied"); },()=>{ ta.select(); $("#outhint").textContent=t("copyFail"); });
-  }catch(e){ ta.select(); $("#outhint").textContent=t("copyFail"); }
+    navigator.clipboard.writeText(lastOut.text).then(()=>{ $("#outhint").textContent=t("copied"); },()=>{ $("#preview").open=true; ta.select(); $("#outhint").textContent=t("copyFail"); });
+  }catch(e){ $("#preview").open=true; ta.select(); $("#outhint").textContent=t("copyFail"); }
 }
 
 /* ---------- Fichier JSON ---------- */
@@ -341,7 +343,7 @@ function countdown(){
   const end=new Date("2027-06-30T23:59:59"), start=new Date("2026-11-18T00:00:00"), now=new Date();
   const days=Math.max(0,Math.ceil((end-now)/86400000));
   $("#days").textContent=days;
-  $("#daysbar").style.width=Math.min(100,Math.max(0,(now-start)/(end-start)*100)).toFixed(1)+"%";
+  $("#daysarc").setAttribute("stroke-dasharray",Math.min(100,Math.max(0,(end-now)/(end-start)*100)).toFixed(1)+" 100");
 }
 
 data=sample();
