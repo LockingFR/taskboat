@@ -53,10 +53,11 @@ async def run():
 
         todo = await export(pg, "todoist")
         checks["Todoist : priorité haute et échéance"] = ",1,1," in todo and "2026-12-05" in todo
+        checks["Todoist : rien de terminé"] = "Tâche terminée" not in todo
 
         md = await export(pg, "md")
         checks["Markdown : échéance, tâche terminée, étapes"] = ("📅 2026-12-05" in md and "- [x] Tâche terminée" in md
-                                                               and "    - [x] Éthiopie" in md)
+                                                               and "    - [x] Éthiopie" in md and "🔁 every 2 weeks" in md)
 
         ics = await export(pg, "ics")
         checks["ICS : 3 VTODO, DUE, virgules échappées"] = (ics.count("BEGIN:VTODO") == 3 and "DUE;VALUE=DATE:20261205" in ics
@@ -77,6 +78,13 @@ async def run():
         await pg.set_input_files("#file", lf); await pg.wait_for_timeout(300)
         unf = re.sub(r"\r?\n ", "", await export(pg, "ics"))
         checks["ICS : UID distincts"] = len(set(re.findall(r"UID:(.+)", unf))) == 3
+
+        steps = {"value": [{"displayName": "S", "tasks": [{"id": "s", "title": "T", "checklistItems": [
+            {"displayName": "faite", "isChecked": True}, {"displayName": "reste", "isChecked": False}]}]}]}
+        with open(lf, "w", encoding="utf-8") as fh: json.dump(steps, fh)
+        await pg.set_input_files("#file", lf); await pg.wait_for_timeout(300)
+        todo = await export(pg, "todoist")
+        checks["Todoist : étapes cochées exclues"] = "faite" not in todo and "reste,,4,2" in todo
 
         # connexion simulée : $expand refusé, 429, pagination, date UTC décalée
         ctx = await b.new_context(timezone_id="Europe/Paris"); p2 = await ctx.new_page()

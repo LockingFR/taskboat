@@ -17,8 +17,8 @@ const T = {
        search:"Rechercher…", due:"échéance", high:"importante", steps:"étapes", needId:"Connexion directe pas encore configurée sur cette page. Utilisez l'option 2 (fichier JSON de Graph Explorer) en attendant.",
        loading:"Chargement…", list:"Liste", badJson:"Ce fichier n'est pas une réponse Microsoft To Do reconnue. Attendu : un objet avec « value » (listes) ou une sauvegarde Taskboat.",
        copied:"Copié.", copyFail:"Copie refusée par le navigateur : sélectionnez le texte et copiez-le.",
-       todoistHint:"Dans Todoist : créez un projet, menu ⋯ › Importer depuis un modèle CSV. 300 tâches max par projet. Pas encore de compte ? https://todoist.com",
-       tooMany:n=>`Attention : ${n} lignes, au-delà des 300 acceptées par Todoist. Découpez ce fichier ou décochez les étapes et les tâches terminées. `,
+       todoistHint:"Seules les tâches et étapes à faire sont incluses (Todoist rouvrirait les terminées) ; les répétitions sont à recréer. Dans Todoist : créez un projet, menu ⋯ › Importer depuis un modèle CSV. 300 tâches max par projet. Pas encore de compte ? https://todoist.com",
+       tooMany:n=>`Attention : ${n} lignes, au-delà des 300 acceptées par Todoist. Découpez ce fichier ou décochez les étapes. `,
        icsHint:"Importez ce fichier dans un calendrier de tâches (Thunderbird, Nextcloud Tasks…).",
        mdHint:"Collez dans une note Obsidian. Les dates suivent le format du plugin Tasks.",
        csvHint:"S'ouvre dans Excel, Google Sheets ou Numbers (UTF-8).", jsonHint:"Gardez ce fichier : il contient tout et se rouvre ici.",
@@ -28,8 +28,8 @@ const T = {
        search:"Search…", due:"due", high:"important", steps:"steps", needId:"Direct sign-in is not configured on this page yet. Use option 2 (Graph Explorer JSON file) for now.",
        loading:"Loading…", list:"List", badJson:"This file is not a recognised Microsoft To Do response. Expected an object with \"value\" (lists) or a Taskboat backup.",
        copied:"Copied.", copyFail:"The browser refused to copy: select the text and copy it.",
-       todoistHint:"In Todoist: create a project, ⋯ menu › Import from CSV template. 300 tasks max per project. No account yet? https://todoist.com",
-       tooMany:n=>`Warning: ${n} rows, above Todoist's limit of 300. Split this file or untick steps and completed tasks. `,
+       todoistHint:"Only open tasks and steps are included (Todoist would reopen completed ones); recurrences must be set again. In Todoist: create a project, ⋯ menu › Import from CSV template. 300 tasks max per project. No account yet? https://todoist.com",
+       tooMany:n=>`Warning: ${n} rows, above Todoist's limit of 300. Split this file or untick steps. `,
        icsHint:"Import this file into a task calendar (Thunderbird, Nextcloud Tasks…).",
        mdHint:"Paste into an Obsidian note. Dates follow the Tasks plugin format.",
        csvHint:"Opens in Excel, Google Sheets or Numbers (UTF-8).", jsonHint:"Keep this file: it holds everything and reopens here.",
@@ -163,12 +163,18 @@ function exTodoist(){
   const l=data.lists[cur];
   const head=["TYPE","CONTENT","DESCRIPTION","PRIORITY","INDENT","AUTHOR","RESPONSIBLE","DATE","DATE_LANG","TIMEZONE","DURATION","DURATION_UNIT","DEADLINE","DEADLINE_LANG"];
   const rows=[csvRow(head)];
-  l.tasks.filter(x=>x.status!=="completed" || optDone()).forEach(x=>{
-    const content=(x.status==="completed"?"✓ ":"")+x.title+(x.categories.length?" "+x.categories.map(c=>"@"+c.replace(/\s+/g,"_")).join(" "):"");
+  /* Le CSV Todoist n'a pas d'état « terminé » : tout ce qui est fini y redeviendrait à faire. */
+  l.tasks.filter(x=>x.status!=="completed").forEach(x=>{
+    const content=x.title+(x.categories.length?" "+x.categories.map(c=>"@"+c.replace(/\s+/g,"_")).join(" "):"");
     rows.push(csvRow(["task",content,x.notes,x.importance==="high"?1:4,1,"","",x.due,x.due?"en":"","","","","",""]));
-    if(optSteps()) x.steps.filter(s=>!s.done||optDone()).forEach(s=>rows.push(csvRow(["task",s.title,"",4,2,"","","","","","","","",""])));
+    if(optSteps()) x.steps.filter(s=>!s.done).forEach(s=>rows.push(csvRow(["task",s.title,"",4,2,"","","","","","","","",""])));
   });
   return { name:`todoist-${slug(l.name)}.csv`, mime:"text/csv", text:rows.join("\r\n"), hint:(rows.length>301?t("tooMany")(rows.length-1):"")+t("todoistHint") };
+}
+function recText(r){ /* format du plugin Tasks : « every 2 weeks » */
+  const m=/^(\w+?)(?: \/(\d+))?$/.exec(r); if(!m) return "";
+  const u={daily:"day",weekly:"week",absoluteMonthly:"month",relativeMonthly:"month",absoluteYearly:"year",relativeYearly:"year"}[m[1]];
+  return u ? (m[2] ? `every ${m[2]} ${u}s` : `every ${u}`) : "";
 }
 function exMD(){
   const out=[];
@@ -178,7 +184,7 @@ function exMD(){
     ts.forEach(x=>{
       let line=`- [${x.status==="completed"?"x":" "}] ${x.title}`;
       if(x.importance==="high") line+=" ⏫";
-      if(x.recurrence) line+=` 🔁 ${x.recurrence}`;
+      if(recText(x.recurrence)) line+=` 🔁 ${recText(x.recurrence)}`;
       if(x.due) line+=` 📅 ${x.due}`;
       if(x.completed) line+=` ✅ ${x.completed}`;
       x.categories.forEach(c=>line+=` #${c.replace(/\s+/g,"_")}`);
