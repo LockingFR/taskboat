@@ -1,0 +1,10 @@
+# Jamais d'export personnel ni de jeton dans le dépôt
+*.export.json
+mes-taches*
+tests/out/
+node_modules/
+__pycache__/
+.DS_Store
+.wrangler/
+dist/
+CLAUDE.md

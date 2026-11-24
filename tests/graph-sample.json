@@ -1,0 +1,60 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('me')/todo/lists(tasks())",
+  "value": [
+    {
+      "displayName": "Tâches",
+      "isOwner": true,
+      "isShared": false,
+      "wellknownListName": "defaultList",
+      "id": "AQMkADAwATM0MDAAMS1lYzhjLTM0OGYtMDACLTAwCgAuAAAD",
+      "tasks": [
+        {
+          "importance": "high",
+          "isReminderOn": false,
+          "status": "notStarted",
+          "title": "Renvoyer le formulaire, avec \"guillemets\", virgules; et point-virgule",
+          "createdDateTime": "2026-11-20T08:12:00Z",
+          "categories": ["Admin"],
+          "id": "AAMkADAwATM0MDAAMS1lYzhjLTM0OGYtMDACLTAwCgBGAAAD1",
+          "body": { "content": "<p>Ligne 1</p><p>Ligne 2 &amp; suite</p>", "contentType": "html" },
+          "dueDateTime": { "dateTime": "2026-12-05T00:00:00.0000000", "timeZone": "UTC" }
+        },
+        {
+          "importance": "normal",
+          "isReminderOn": false,
+          "status": "completed",
+          "title": "Tâche terminée",
+          "createdDateTime": "2026-11-01T08:00:00Z",
+          "categories": [],
+          "id": "AAMkADAwATM0MDAAMS1lYzhjLTM0OGYtMDACLTAwCgBGAAAD2",
+          "body": { "content": "", "contentType": "text" },
+          "completedDateTime": { "dateTime": "2026-11-10T00:00:00.0000000", "timeZone": "UTC" }
+        }
+      ]
+    },
+    {
+      "displayName": "Courses",
+      "isOwner": true,
+      "isShared": true,
+      "wellknownListName": "none",
+      "id": "AQMkADAwATM0MDAAMS1lYzhjLTM0OGYtMDACLTAwCgAuAAAE",
+      "tasks": [
+        {
+          "importance": "normal",
+          "isReminderOn": false,
+          "status": "notStarted",
+          "title": "Café en grains",
+          "createdDateTime": "2026-11-21T08:00:00Z",
+          "categories": [],
+          "id": "AAMkADAwATM0MDAAMS1lYzhjLTM0OGYtMDACLTAwCgBGAAAD3",
+          "body": { "content": "Torréfaction moyenne", "contentType": "text" },
+          "recurrence": { "pattern": { "type": "weekly", "interval": 2, "daysOfWeek": ["saturday"] }, "range": { "type": "noEnd", "startDate": "2026-11-22" } },
+          "checklistItems": [
+            { "displayName": "Éthiopie", "isChecked": true, "id": "c1" },
+            { "displayName": "Colombie", "isChecked": false, "id": "c2" }
+          ]
+        }
+      ]
+    }
+  ]
+}

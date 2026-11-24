@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="alternate" hreflang="fr" href="https://DOMAINE/">
+<link rel="alternate" hreflang="en" href="https://DOMAINE/?lang=en">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<meta name="theme-color" content="#1b5e7a">
+<title>Exporter Microsoft To Do gratuitement · Taskboat</title>
+<meta name="description" content="Exportez gratuitement vos listes Microsoft To Do avant leur retrait le 30 juin 2027 : CSV, Todoist, Markdown/Obsidian, ICS (VTODO) et JSON complet. 100 % dans votre navigateur, aucune donnée envoyée.">
+<link rel="canonical" href="https://DOMAINE/">
+<meta property="og:title" content="Taskboat · Sauvez vos listes Microsoft To Do">
+<meta property="og:description" content="Export gratuit de Microsoft To Do vers CSV, Todoist, Markdown, ICS et JSON, sans rien installer. Tout se passe dans votre navigateur.">
+<meta property="og:type" content="website">
+
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Taskboat","applicationCategory":"UtilitiesApplication","operatingSystem":"Web browser","description":"Free in-browser exporter for Microsoft To Do lists: CSV, Todoist CSV, Markdown, ICS (VTODO) and full JSON backup.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"inLanguage":["fr","en"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Quand Microsoft To Do s'arrête-t-il ?","acceptedAnswer":{"@type":"Answer","text":"Microsoft a annoncé le 18 novembre 2026 que les applications To Do (Windows, Mac, iOS, Android et web) seront retirées le 30 juin 2027. Les comptes personnels n'ont pas de remplaçant : Microsoft conseille de choisir une autre application."}},
+{"@type":"Question","name":"Mes tâches sont-elles envoyées sur un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. Taskboat lit vos listes directement depuis Microsoft dans votre navigateur et génère les fichiers sur votre appareil. Aucune tâche ne passe par nos serveurs."}},
+{"@type":"Question","name":"Comment importer mes tâches Microsoft To Do dans Todoist ?","acceptedAnswer":{"@type":"Answer","text":"Choisissez une liste, exportez au format Todoist CSV, puis dans Todoist créez un projet et utilisez Importer depuis un modèle CSV. Todoist accepte jusqu'à 300 tâches par projet."}},
+{"@type":"Question","name":"How do I export Microsoft To Do before it retires?","acceptedAnswer":{"@type":"Answer","text":"Sign in with your Microsoft account in Taskboat, or load the JSON from Microsoft Graph Explorer, then download your lists as CSV, Todoist CSV, Markdown, ICS or a full JSON backup. Everything runs in your browser."}},
+{"@type":"Question","name":"Les étapes et les notes sont-elles conservées ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Les étapes (sous-tâches), notes, dates d'échéance, importance, catégories et liens sont repris dans le JSON complet et, selon le format, dans les autres exports."}}
+]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="12" fill="none" stroke="var(--buoy)" stroke-width="6" stroke-dasharray="9.42 9.42"/><circle cx="15" cy="15" r="12" fill="none" stroke="var(--ink)" stroke-width="1.2"/><circle cx="15" cy="15" r="6.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/><path d="M12 15.2l2.1 2.1 4-4.4" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Taskboat
+    </div>
+    <div class="langs" role="group" aria-label="Langue / Language">
+      <button id="lang-fr" type="button" aria-pressed="true">FR</button>
+      <button id="lang-en" type="button" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <h1 class="fr">Microsoft To Do ferme. <em>Emportez vos listes.</em></h1>
+      <h1 class="en">Microsoft To Do is retiring. <em>Take your lists with you.</em></h1>
+      <p class="lead fr">Exportez toutes vos listes, tâches, étapes et notes vers CSV, Todoist, Markdown (Obsidian), ICS ou une sauvegarde JSON complète. Gratuit, sans installation, et vos tâches ne quittent jamais votre navigateur.</p>
+      <p class="lead en">Export every list, task, step and note to CSV, Todoist, Markdown (Obsidian), ICS or a full JSON backup. Free, nothing to install, and your tasks never leave your browser.</p>
+    </div>
+    <div class="countdown" aria-live="polite">
+      <div class="lab"><span class="fr">Retrait des applis To Do</span><span class="en">To Do apps retire</span> · 30/06/2027</div>
+      <div class="num" id="days">—</div>
+      <div class="sub"><span class="fr">jours pour sauver vos tâches</span><span class="en">days left to save your tasks</span></div>
+      <div class="bar"><i id="daysbar"></i></div>
+    </div>
+  </div>
+
+  <ul class="trust">
+    <li><span class="fr">Traitement 100 % local</span><span class="en">100% local processing</span></li>
+    <li><span class="fr">Comptes personnels et professionnels</span><span class="en">Personal and work accounts</span></li>
+    <li><span class="fr">Lecture seule : rien n'est modifié</span><span class="en">Read-only: nothing is changed</span></li>
+    <li><span class="fr">Étapes, notes, échéances, importance</span><span class="en">Steps, notes, due dates, importance</span></li>
+  </ul>
+
+  <main class="tool" id="outil">
+    <div class="sources">
+      <div class="src">
+        <h2><span class="fr">1. Se connecter à Microsoft</span><span class="en">1. Sign in with Microsoft</span></h2>
+        <p class="fr">Lecture seule (permission <code>Tasks.Read</code>). Le jeton reste dans cet onglet.</p>
+        <p class="en">Read-only (<code>Tasks.Read</code> permission). The token stays in this tab.</p>
+        <button class="btn primary" id="btn-ms" type="button"><span class="fr">Se connecter et charger mes listes</span><span class="en">Sign in and load my lists</span></button>
+      </div>
+      <div class="src">
+        <h2><span class="fr">2. Ou ouvrir un fichier JSON</span><span class="en">2. Or open a JSON file</span></h2>
+        <p class="fr">Réponse de Graph Explorer (<code>/me/todo/lists?$expand=tasks</code>) ou sauvegarde Taskboat.</p>
+        <p class="en">Graph Explorer response (<code>/me/todo/lists?$expand=tasks</code>) or a Taskboat backup.</p>
+        <div class="row">
+          <label class="btn" for="file"><span class="fr">Choisir un fichier</span><span class="en">Choose a file</span></label>
+          <input id="file" type="file" accept=".json,application/json" hidden>
+          <span class="drop" id="drop"><span class="fr">ou glissez-le ici, ou collez le JSON</span><span class="en">or drop it here, or paste the JSON</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="panes">
+      <nav class="lists" id="lists" aria-label="Listes"></nav>
+      <div class="tasks">
+        <div class="head">
+          <h3 id="list-title"></h3>
+          <input type="search" id="q" placeholder="Rechercher…" aria-label="Rechercher">
+        </div>
+        <div id="task-list"></div>
+      </div>
+    </div>
+
+    <div class="exports">
+      <h2><span class="fr">Exporter</span><span class="en">Export</span></h2>
+      <div class="fmt" id="fmt">
+        <button type="button" data-f="json"><b>JSON</b><small class="fr">Sauvegarde complète, toutes listes</small><small class="en">Full backup, all lists</small></button>
+        <button type="button" data-f="csv"><b>CSV</b><small class="fr">Excel, Sheets, Notion, toutes listes</small><small class="en">Excel, Sheets, Notion, all lists</small></button>
+        <button type="button" data-f="todoist"><b>Todoist CSV</b><small class="fr">Liste affichée, 1 projet</small><small class="en">Current list, 1 project</small></button>
+        <button type="button" data-f="md"><b>Markdown</b><small class="fr">Obsidian, Logseq, Joplin</small><small class="en">Obsidian, Logseq, Joplin</small></button>
+        <button type="button" data-f="ics"><b>ICS (VTODO)</b><small class="fr">Thunderbird, Nextcloud, Rappels</small><small class="en">Thunderbird, Nextcloud, Reminders</small></button>
+      </div>
+      <div class="opts">
+        <label><input type="checkbox" id="opt-done" checked> <span class="fr">Inclure les tâches terminées</span><span class="en">Include completed tasks</span></label>
+        <label><input type="checkbox" id="opt-steps" checked> <span class="fr">Inclure les étapes</span><span class="en">Include steps</span></label>
+      </div>
+      <div class="out" id="out" hidden>
+        <div class="row">
+          <span class="fname" id="fname"></span>
+          <span class="row">
+            <button class="btn" type="button" id="btn-copy"><span class="fr">Copier</span><span class="en">Copy</span></button>
+            <button class="btn primary" type="button" id="btn-dl"><span class="fr">Télécharger</span><span class="en">Download</span></button>
+          </span>
+        </div>
+        <textarea id="outtext" readonly aria-label="Aperçu de l'export"></textarea>
+        <p class="hint" id="outhint"></p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="wrap narrow">
+  <section class="content" id="guide">
+    <h2 class="fr">Exporter Microsoft To Do en 3 étapes</h2>
+    <h2 class="en">Export Microsoft To Do in 3 steps</h2>
+    <ol class="howto">
+      <li><div class="fr"><b>Connectez-vous</b> avec le compte Microsoft qui contient vos listes (Outlook.com, Hotmail, Microsoft 365). Taskboat demande seulement le droit de lire vos tâches.</div><div class="en"><b>Sign in</b> with the Microsoft account that holds your lists (Outlook.com, Hotmail, Microsoft 365). Taskboat only asks to read your tasks.</div></li>
+      <li><div class="fr"><b>Vérifiez</b> vos listes dans l'aperçu : nombre de tâches, étapes, notes, échéances.</div><div class="en"><b>Check</b> your lists in the preview: task counts, steps, notes, due dates.</div></li>
+      <li><div class="fr"><b>Exportez</b> au format de votre nouvelle application. Gardez aussi la sauvegarde JSON : elle contient tout.</div><div class="en"><b>Export</b> in your new app's format. Keep the JSON backup too: it contains everything.</div></li>
+    </ol>
+    <p class="fr">Sans connexion, vous pouvez aussi ouvrir <a href="https://developer.microsoft.com/graph/graph-explorer" rel="noopener">Microsoft Graph Explorer</a>, exécuter <code>GET https://graph.microsoft.com/v1.0/me/todo/lists?$expand=tasks</code> avec la permission <code>Tasks.Read</code>, enregistrer la réponse dans un fichier <code>.json</code> et l'ouvrir ici. Les étapes ne figurent pas dans cette réponse.</p>
+    <p class="en">Without signing in here, you can open <a href="https://developer.microsoft.com/graph/graph-explorer" rel="noopener">Microsoft Graph Explorer</a>, run <code>GET https://graph.microsoft.com/v1.0/me/todo/lists?$expand=tasks</code> with the <code>Tasks.Read</code> permission, save the response as a <code>.json</code> file and open it here. Steps are not included in that response.</p>
+
+    <h2 class="fr">Quel format pour quelle application ?</h2>
+    <h2 class="en">Which format for which app?</h2>
+    <div class="tablewrap">
+      <table class="dest">
+        <thead><tr><th class="fr">Destination</th><th class="en">Destination</th><th>Format</th><th class="fr">Remarque</th><th class="en">Note</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://todoist.com" rel="noopener">Todoist</a></td><td>Todoist CSV</td><td class="fr">Un fichier par projet, 300 tâches max par projet</td><td class="en">One file per project, 300 tasks max per project</td></tr>
+          <tr><td>Obsidian, Logseq, Joplin</td><td>Markdown</td><td class="fr">Cases à cocher, échéances au format du plugin Tasks</td><td class="en">Checkboxes, due dates in Tasks plugin format</td></tr>
+          <tr><td>Thunderbird, Nextcloud Tasks</td><td>ICS (VTODO)</td><td class="fr">Import direct dans un calendrier de tâches</td><td class="en">Direct import into a task calendar</td></tr>
+          <tr><td>Excel, Google Sheets, Notion</td><td>CSV</td><td class="fr">Une ligne par tâche, colonne « liste »</td><td class="en">One row per task, with a list column</td></tr>
+          <tr><td>TickTick</td><td class="fr">Import intégré</td><td class="en">Built-in import</td><td class="fr">Paramètres › Intégrations et import › Microsoft To Do</td><td class="en">Settings › Integrations &amp; Import › Microsoft To Do</td></tr>
+          <tr><td class="fr">Archive personnelle</td><td class="en">Personal archive</td><td>JSON</td><td class="fr">Tout est conservé, réimportable dans Taskboat</td><td class="en">Everything kept, can be reopened in Taskboat</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="fr">Questions fréquentes</h2>
+    <h2 class="en">Frequently asked questions</h2>
+    <details><summary><span class="fr">Quand Microsoft To Do s'arrête-t-il ?</span><span class="en">When does Microsoft To Do shut down?</span></summary>
+      <p class="fr">Microsoft a annoncé le 18 novembre 2026 le retrait des applications To Do (Windows, Mac, iOS, Android et web) le 30 juin 2027. Les comptes professionnels basculent vers Planner. Les comptes personnels, y compris Microsoft 365 Personnel et Famille, n'ont pas de remplaçant.</p>
+      <p class="en">On November 18, 2026, Microsoft announced that the To Do apps (Windows, Mac, iOS, Android and web) retire on June 30, 2027. Work accounts move to Planner. Personal accounts, including Microsoft 365 Personal and Family, get no replacement.</p></details>
+    <details><summary><span class="fr">Mes tâches passent-elles par vos serveurs ?</span><span class="en">Do my tasks go through your servers?</span></summary>
+      <p class="fr">Non. La page appelle directement l'API Microsoft Graph depuis votre navigateur, puis crée les fichiers sur votre appareil. Fermer l'onglet efface tout.</p>
+      <p class="en">No. The page calls the Microsoft Graph API directly from your browser, then builds the files on your device. Closing the tab clears everything.</p></details>
+    <details><summary><span class="fr">Pourquoi ne pas attendre l'export officiel de Microsoft ?</span><span class="en">Why not wait for Microsoft's official export?</span></summary>
+      <p class="fr">Microsoft n'a encore publié ni la date ni le format de cet export, et prévient qu'il ne sera pas forcément importable dans une autre application. Une sauvegarde aujourd'hui ne coûte rien.</p>
+      <p class="en">Microsoft has not published the date or format of that export yet, and warns it may not import into other apps. Backing up today costs nothing.</p></details>
+    <details><summary><span class="fr">Les listes partagées sont-elles exportées ?</span><span class="en">Are shared lists exported?</span></summary>
+      <p class="fr">Oui, les listes partagées avec vous apparaissent avec leurs tâches. Les membres et les droits de partage ne sont pas repris : chaque personne doit exporter de son côté.</p>
+      <p class="en">Yes, lists shared with you appear with their tasks. Members and sharing permissions are not carried over: each person should export on their side.</p></details>
+    <details><summary><span class="fr">Et les pièces jointes ?</span><span class="en">What about attachments?</span></summary>
+      <p class="fr">Les fichiers joints ne sont pas exportés pour le moment : enregistrez-les depuis To Do. Leur téléchargement est prévu dans une future offre Premium. Les liens associés aux tâches sont repris.</p>
+      <p class="en">Attached files are not exported for now: save them from To Do. Downloading them is planned for a future Premium offer. Links attached to tasks are included.</p></details>
+  </section>
+
+  <section class="premium" id="premium">
+    <h2>Taskboat Premium</h2>
+    <p class="fr">L'export reste gratuit. Premium sert à ceux qui veulent déménager sans manipuler de fichiers.</p>
+    <p class="en">Export stays free. Premium is for people who want to move without handling files.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3 class="fr">Gratuit</h3><h3 class="en">Free</h3>
+        <div class="price">0 €</div>
+        <ul class="fr"><li>Toutes les listes et tâches</li><li>JSON, CSV, Todoist, Markdown, ICS</li><li>Étapes, notes, échéances</li></ul>
+        <ul class="en"><li>All lists and tasks</li><li>JSON, CSV, Todoist, Markdown, ICS</li><li>Steps, notes, due dates</li></ul>
+      </div>
+      <div class="plan hl">
+        <span class="badge fr">Bientôt</span><span class="badge en">Coming soon</span>
+        <h3>Premium</h3>
+        <div class="price"><span class="fr">7 € une fois</span><span class="en">€7 one-time</span></div>
+        <ul class="fr"><li>Envoi direct vers Todoist, Google Tasks et Notion</li><li>Pièces jointes téléchargées</li><li>Sauvegarde automatique chaque semaine jusqu'à la fermeture</li><li>Lecture du futur export officiel Microsoft</li></ul>
+        <ul class="en"><li>Direct transfer to Todoist, Google Tasks and Notion</li><li>Attachments downloaded</li><li>Weekly automatic backup until shutdown</li><li>Reads Microsoft's upcoming official export</li></ul>
+      </div>
+      <div class="plan">
+        <span class="badge fr">Bientôt</span><span class="badge en">Coming soon</span>
+        <h3 class="fr">Équipe</h3><h3 class="en">Team</h3>
+        <div class="price"><span class="fr">sur devis</span><span class="en">on request</span></div>
+        <ul class="fr"><li>Export de plusieurs comptes</li><li>Rapport de migration vers Planner</li><li>Support prioritaire</li></ul>
+        <ul class="en"><li>Multi-account export</li><li>Planner migration report</li><li>Priority support</li></ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap narrow">
+    <p class="fr">Taskboat est un outil indépendant, non affilié à Microsoft. Microsoft To Do est une marque de Microsoft Corporation, citée uniquement pour décrire la compatibilité.</p>
+    <p class="fr"><a href="/exporter-microsoft-to-do/">Guide : exporter Microsoft To Do</a> · <a href="/microsoft-to-do-vers-todoist/">Passer de To Do à Todoist</a> · <a href="https://github.com/LockingFR/taskboat">Code source</a></p>
+    <p class="en">Taskboat is an independent tool, not affiliated with Microsoft. Microsoft To Do is a trademark of Microsoft Corporation, mentioned only to describe compatibility.</p>
+    <p class="en"><a href="/en/export-microsoft-to-do/">Guide: export Microsoft To Do</a> · <a href="https://github.com/LockingFR/taskboat">Source code</a></p>
+  </div>
+</footer>
+
+<script src="/assets/app.js" defer></script>
+</body>
+</html>
