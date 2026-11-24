@@ -53,7 +53,7 @@ async def run():
 
         todo = await export(pg, "todoist")
         checks["Todoist : priorité haute et échéance"] = ",1,1," in todo and "2026-12-05" in todo
-        checks["Todoist : rien de terminé"] = "Tâche terminée" not in todo
+        checks["Todoist : terminées exclues et annoncées"] = "Tâche terminée" not in todo and "1 tâche terminée non incluse" in await pg.inner_text("#outhint")
 
         md = await export(pg, "md")
         checks["Markdown : échéance, tâche terminée, étapes"] = ("📅 2026-12-05" in md and "- [x] Tâche terminée" in md
@@ -84,7 +84,7 @@ async def run():
         with open(lf, "w", encoding="utf-8") as fh: json.dump(steps, fh)
         await pg.set_input_files("#file", lf); await pg.wait_for_timeout(300)
         todo = await export(pg, "todoist")
-        checks["Todoist : étapes cochées exclues"] = "faite" not in todo and "reste,,4,2" in todo
+        checks["Todoist : étapes cochées en description"] = "task,T,✓ faite,4,1" in todo and todo.count("faite") == 1 and "reste,,4,2" in todo
 
         # connexion simulée : $expand refusé, 429, pagination, date UTC décalée
         ctx = await b.new_context(timezone_id="Europe/Paris"); p2 = await ctx.new_page()
