@@ -104,7 +104,7 @@ async def run():
         await p2.route("**/msal-browser.min.js", lambda r: r.fulfill(content_type=js_ct, body="""window.msal={PublicClientApplication:class{
           getAllAccounts(){return []} async loginPopup(){return {account:{username:"t@example.com"}}} async acquireTokenSilent(){return {accessToken:"x"}}}}"""))
         await p2.goto("http://127.0.0.1:8766/?lang=fr"); await p2.click("#btn-ms"); await p2.wait_for_timeout(3000)
-        checks["Graph simulé : sans $expand, 429, pagination"] = "1 listes, 2 tâches" in await p2.inner_text("#status")
+        checks["Graph simulé : sans $expand, 429, pagination"] = "1 liste, 2 tâches" in await p2.inner_text("#status")
         o = json.loads(await export(p2, "json"))["lists"][0]["tasks"]
         checks["Graph simulé : étapes et date locale"] = len(o) == 2 and o[0]["steps"][0]["title"] == "étape" and o[0]["due"] == "2026-12-05"
 

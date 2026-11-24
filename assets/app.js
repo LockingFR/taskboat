@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 /* Renseigner après l'inscription de l'application Azure (voir le plan en tête de fichier). */
-const CLIENT_ID = "AZURE_CLIENT_ID";
+const CLIENT_ID = "abcc1493-94ee-4992-99c8-749ed8a2bbd1";
 const CONFIGURED = /^[0-9a-f-]{36}$/i.test(CLIENT_ID);
 const MSAL_URL = "/assets/vendor/msal-browser.min.js"; // copie locale de @azure/msal-browser 2.38.3 (lib/msal-browser.min.js)
 const GRAPH = "https://graph.microsoft.com/v1.0";
@@ -13,7 +13,7 @@ let cur = 0, lastOut = null, lastKey = "todoist";
 
 const T = {
   fr:{ sample:"Exemple", sampleTxt:"Données d'exemple affichées. Connectez-vous ou ouvrez un fichier pour voir vos propres listes.",
-       loaded:(l,t)=>`${l} listes, ${t} tâches chargées`, from:"depuis", noTasks:"Aucune tâche dans cette liste.",
+       loaded:(l,t)=>`${l} liste${l>1?"s":""}, ${t} tâche${t>1?"s chargées":" chargée"}`, from:"depuis", noTasks:"Aucune tâche dans cette liste.",
        search:"Rechercher…", due:"échéance", high:"importante", steps:"étapes", needId:"Connexion directe pas encore configurée sur cette page. Utilisez l'option 2 (fichier JSON de Graph Explorer) en attendant.",
        loading:"Chargement…", list:"Liste", badJson:"Ce fichier n'est pas une réponse Microsoft To Do reconnue. Attendu : un objet avec « value » (listes) ou une sauvegarde Taskboat.",
        copied:"Copié.", copyFail:"Copie refusée par le navigateur : sélectionnez le texte et copiez-le.",
@@ -24,7 +24,7 @@ const T = {
        csvHint:"S'ouvre dans Excel, Google Sheets ou Numbers (UTF-8).", jsonHint:"Gardez ce fichier : il contient tout et se rouvre ici.",
        dlFail:"Le téléchargement est bloqué ici : utilisez Copier.", err:"Erreur", throttled:"Microsoft limite le débit, nouvelle tentative…" },
   en:{ sample:"Sample", sampleTxt:"Sample data shown. Sign in or open a file to see your own lists.",
-       loaded:(l,t)=>`${l} lists, ${t} tasks loaded`, from:"from", noTasks:"No tasks in this list.",
+       loaded:(l,t)=>`${l} list${l===1?"":"s"}, ${t} task${t===1?"":"s"} loaded`, from:"from", noTasks:"No tasks in this list.",
        search:"Search…", due:"due", high:"important", steps:"steps", needId:"Direct sign-in is not configured on this page yet. Use option 2 (Graph Explorer JSON file) for now.",
        loading:"Loading…", list:"List", badJson:"This file is not a recognised Microsoft To Do response. Expected an object with \"value\" (lists) or a Taskboat backup.",
        copied:"Copied.", copyFail:"The browser refused to copy: select the text and copy it.",
